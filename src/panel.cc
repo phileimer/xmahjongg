@@ -12,6 +12,7 @@
 #include "traverse.hh"
 #include "counter.hh"
 #include <X11/keysym.h>
+#include <X11/XKBlib.h>
 
 extern bool solvable_boards;
 extern Moment last_new_board;
@@ -463,7 +464,7 @@ Panel::handle(Game *game, XEvent *e)
     break;
     
    case KeyPress:
-    key_press(game, XKeycodeToKeysym(display(), e->xkey.keycode, 0),
+    key_press(game, XkbKeycodeToKeysym(display(), e->xkey.keycode, 0, e->xkey.state & ShiftMask ? 1 : 0),
 	      e->xkey.state);
     break;
     

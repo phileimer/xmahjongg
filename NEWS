@@ -1,5 +1,12 @@
 Xmahjongg NEWS
 
+Version 3.7.1   28.Jan.2020	- J. Ph.
+* update and fix autoconf/automake
+* silent warnings
+* button position modified to avoid erroneous click
+* --geometry fix
+
+
 Version 3.7   8.Mar.2005
 
 * Man page bug fixes from Debian via Dave Swegen.

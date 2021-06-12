@@ -37,7 +37,7 @@ const char String::oom_string_data = 0;
 
 inline
 String::Memo::Memo()
-    : _refcount(0), _capacity(0), _dirty(0), _real_data("")
+    : _refcount(0), _capacity(0), _dirty(0), _real_data((char *)"")
 {
 }
 

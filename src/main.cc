@@ -249,11 +249,11 @@ make_panel_images(Panel *p)
   matches = new MatchCount(p, gifbuttons, "rock");
   p->set_match_count(matches);
   
-  p->new_but = new_button(p, "new");
-  p->undo_but = new_button(p, "undo");
-  p->quit_but = new_button(p, "quit");
-  p->hint_but = new_button(p, "hint");
-  p->clean_but = new_button(p, "clean");
+  p->new_but = new_button(p, (char*)"new");
+  p->undo_but = new_button(p, (char *)"undo");
+  p->quit_but = new_button(p, (char *)"quit");
+  p->hint_but = new_button(p, (char *)"hint");
+  p->clean_but = new_button(p, (char *)"clean");
 }
 
 
@@ -532,7 +532,7 @@ main(int argc, char *argv[])
     Clp_NewParser(argc, (const char * const *)argv, sizeof(options) / sizeof(options[0]), options);
   
   program_name = Clp_ProgramName(clp);
-  
+
   while (1) {
     int opt = Clp_Next(clp);
     switch (opt) {
@@ -708,7 +708,7 @@ particular purpose.\n");
     XStringListToTextProperty(woog, 1, &window_name_prop);
     XStringListToTextProperty(woog, 1, &icon_name_prop);
     class_hint.res_name = (char *)(x_name ? x_name : program_name);
-    class_hint.res_class = "XMahjongg";
+    class_hint.res_class = (char *)"XMahjongg";
 
     XMoveResizeWindow(display, window, size_hint->x, size_hint->y, size_hint->width, size_hint->height);
     XSetWMProperties(display, window, &window_name_prop, &icon_name_prop,

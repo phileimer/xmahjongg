@@ -30,7 +30,7 @@ xmahjongg_SOURCES = \
 
 BUILT_SOURCES = images.c
 
-INCLUDES = $(X_CFLAGS) -I$(top_srcdir)/include
+AM_CPPFLAGS = $(X_CFLAGS) -I$(top_srcdir)/include
 
 xmahjongg_LDADD = $(LDADD) ../liblcdf/liblcdf.a @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 

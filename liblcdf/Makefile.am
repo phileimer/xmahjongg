@@ -18,4 +18,4 @@ giftoc_SOURCES = giftoc.c
 ## liblcdf_a_DEPENDENCIES = @FIXLIBC_O@
 ## liblcdf_a_LIBADD = @FIXLIBC_O@
 
-INCLUDES = $(X_CFLAGS) -I$(top_srcdir)/include
+AM_CPPFLAGS = $(X_CFLAGS) -I$(top_srcdir)/include
