@@ -107,9 +107,9 @@ Panel::resize(int x, int y)
   _window_height = y;
   int quit_x = _window_width - quit_but->width() - 10;
   int new_x = quit_x - new_but->width() - 10;
-  int undo_x = new_x - undo_but->width() - 10;
+  int undo_x = new_x - undo_but->width() - 60;
   int clean_x = undo_x - clean_but->width() - 10;
-  int hint_x = clean_x - hint_but->width() - 10;
+  int hint_x = clean_x - hint_but->width() - 60;
   quit_but->set_position(quit_x, 10);
   new_but->set_position(new_x, 10);
   undo_but->set_position(undo_x, 10);
