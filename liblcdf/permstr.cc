@@ -144,7 +144,6 @@ PermString::initialize(const char* s, int length)
     buckets[hash] = buck;
     buck->length = length;
     memcpy(buck->data, s, length);
-    buck->data[length] = 0;
     
     _rep = buck->data;
 }

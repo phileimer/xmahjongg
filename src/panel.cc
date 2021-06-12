@@ -497,7 +497,7 @@ Panel::handle(Game *game, XEvent *e)
     break;
     
    case ClientMessage:
-	if( e->xclient.message_type == wm_protocols && e->xclient.data.l[0] == wm_delete_window )
+	if( e->xclient.message_type == wm_protocols && e->xclient.data.l[0] == (long)wm_delete_window )
 	  exit(0);
 	break;
 
