@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=3.7
+Type=Application
+Name=XMahjongg
+GenericName=Mahjong
+Comment=Tile Game
+Icon=xmahjongg
+
+Exec=xmahjongg
+Terminal=false
+StartupNotify=false
+
+Categories=Game;

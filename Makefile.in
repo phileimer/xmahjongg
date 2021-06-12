@@ -13,6 +13,7 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -153,9 +154,11 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 man6dir = $(mandir)/man6
-am__installdirs = "$(DESTDIR)$(man6dir)"
+am__installdirs = "$(DESTDIR)$(man6dir)" "$(DESTDIR)$(desktopdir)" \
+	"$(DESTDIR)$(icondir)"
 NROFF = nroff
 MANS = $(man_MANS)
+DATA = $(desktop_DATA) $(icon_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 am__recursive_targets = \
@@ -329,6 +332,10 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign check-news
 SUBDIRS = liblcdf src
 man_MANS = xmahjongg.6
+desktopdir = $(datadir)/applications
+desktop_DATA = xmahjongg.desktop
+icondir = $(datadir)/pixmaps
+icon_DATA = xmahjongg.png
 
 #
 # Installation
@@ -347,15 +354,8 @@ BACKGROUNDS = default.gif green.gif
 #
 EXTRA_DIST = \
 	xmahjongg.6 \
-	xmahjongg.spec \
-	include/lcdf/clp.h \
-	include/lcdf/inttypes.h \
-	include/lcdf/permstr.hh \
-	include/lcdf/straccum.hh \
-	include/lcdf/string.hh \
-	include/lcdf/vector.hh include/lcdf/vector.cc \
-	include/lcdfgif/gif.h \
-	include/lcdfgif/gifx.h
+	$(desktop_DATA) \
+	$(icon_DATA)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -452,6 +452,48 @@ uninstall-man6:
 	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^6][0-9a-z]*$$,6,;x' \
 	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
 	dir='$(DESTDIR)$(man6dir)'; $(am__uninstall_files_from_dir)
+install-desktopDATA: $(desktop_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(desktop_DATA)'; test -n "$(desktopdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(desktopdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(desktopdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(desktopdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(desktopdir)" || exit $$?; \
+	done
+
+uninstall-desktopDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(desktop_DATA)'; test -n "$(desktopdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(desktopdir)'; $(am__uninstall_files_from_dir)
+install-iconDATA: $(icon_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(icon_DATA)'; test -n "$(icondir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(icondir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(icondir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(icondir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(icondir)" || exit $$?; \
+	done
+
+uninstall-iconDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icon_DATA)'; test -n "$(icondir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(icondir)'; $(am__uninstall_files_from_dir)
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -767,10 +809,10 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(MANS) config.h
+all-am: Makefile $(MANS) $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(man6dir)"; do \
+	for dir in "$(DESTDIR)$(man6dir)" "$(DESTDIR)$(desktopdir)" "$(DESTDIR)$(icondir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -824,7 +866,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-data-local install-man
+install-data-am: install-data-local install-desktopDATA \
+	install-iconDATA install-man
 
 install-dvi: install-dvi-recursive
 
@@ -870,7 +913,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-local uninstall-man
+uninstall-am: uninstall-desktopDATA uninstall-iconDATA uninstall-local \
+	uninstall-man
 
 uninstall-man: uninstall-man6
 
@@ -884,14 +928,16 @@ uninstall-man: uninstall-man6
 	distclean-hdr distclean-tags distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am \
-	install-data-local install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-man6 install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-local uninstall-man uninstall-man6
+	install-data-local install-desktopDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-iconDATA install-info install-info-am \
+	install-man install-man6 install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-desktopDATA uninstall-iconDATA uninstall-local \
+	uninstall-man uninstall-man6
 
 .PRECIOUS: Makefile
 
@@ -912,6 +958,15 @@ uninstall-local:
 	-cd $(DESTDIR)$(pkgdatadir)/backgrounds; rm -f $(BACKGROUNDS)
 	-rmdir $(DESTDIR)$(pkgdatadir)/layouts $(DESTDIR)$(pkgdatadir)/tiles $(DESTDIR)$(pkgdatadir)/backgrounds
 	-rmdir $(DESTDIR)$(pkgdatadir)
+	xmahjongg.spec \
+	include/lcdf/clp.h \
+	include/lcdf/inttypes.h \
+	include/lcdf/permstr.hh \
+	include/lcdf/straccum.hh \
+	include/lcdf/string.hh \
+	include/lcdf/vector.hh include/lcdf/vector.cc \
+	include/lcdfgif/gif.h \
+	include/lcdfgif/gifx.h
 
 dist-hook:
 	mkdir $(distdir)/share

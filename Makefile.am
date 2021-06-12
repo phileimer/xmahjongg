@@ -1,9 +1,17 @@
 ## Process this file with automake to produce Makefile.in
+VERSION = @VERSION@
+
 AUTOMAKE_OPTIONS = foreign check-news
 
 SUBDIRS = liblcdf src
 
 man_MANS = xmahjongg.6
+
+desktopdir = $(datadir)/applications
+desktop_DATA = xmahjongg.desktop
+
+icondir = $(datadir)/pixmaps
+icon_DATA = xmahjongg.png
 
 #
 # Installation
@@ -40,6 +48,8 @@ uninstall-local:
 
 EXTRA_DIST = \
 	xmahjongg.6 \
+	$(desktop_DATA) \
+	$(icon_DATA)
 	xmahjongg.spec \
 	include/lcdf/clp.h \
 	include/lcdf/inttypes.h \
@@ -72,7 +82,6 @@ rpm: dist
 	rpm --rcfile /tmp/rpm-xmj/rc -bb xmahjongg.spec ; \
 	cp /tmp/rpm-xmj/RPMS/$$buildarch/*.rpm .
 	rm -rf /tmp/rpm-xmj
-
 
 #
 # Maintenance
