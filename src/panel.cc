@@ -26,6 +26,15 @@ Panel::Panel(Display *d, Window w)
     _tile_count(0), _match_count(0), _solution(0),
     _traversal(0), _need_redraw(false)
 {
+	_scan_mark_x = 0;
+	_scan_mark_y = 0;
+
+	_redraw_left = 0;
+	_redraw_top = 0;
+	_redraw_right = 0;
+	_redraw_bottom = 0;
+
+	new_but = undo_but = quit_but = hint_but = clean_but = NULL;
 }
 
 
@@ -469,7 +478,8 @@ Panel::handle(Game *game, XEvent *e)
     break;
     
    case ConfigureNotify:
-    resize(e->xconfigure.width, e->xconfigure.height);
+	invalidate(e->xconfigure.x, e->xconfigure.y, e->xconfigure.width, e->xconfigure.height);
+	resize(e->xconfigure.width, e->xconfigure.height);
     break;
     
    case MapNotify:
