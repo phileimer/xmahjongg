@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmahjongg],[3.7.2])
+AC_INIT([xmahjongg],[3.7.3])
 AC_CONFIG_SRCDIR([src/game.hh])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS(config.h)
