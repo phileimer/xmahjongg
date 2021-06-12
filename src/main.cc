@@ -710,7 +710,7 @@ particular purpose.\n");
     class_hint.res_name = (char *)(x_name ? x_name : program_name);
     class_hint.res_class = "XMahjongg";
 
-    XResizeWindow(display, window, size_hint->width, size_hint->height);
+    XMoveResizeWindow(display, window, size_hint->x, size_hint->y, size_hint->width, size_hint->height);
     XSetWMProperties(display, window, &window_name_prop, &icon_name_prop,
 		     NULL, 0, size_hint, NULL, &class_hint);
     
