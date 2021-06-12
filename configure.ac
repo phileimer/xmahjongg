@@ -1,0 +1,137 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT([xmahjongg],[3.7.2])
+AC_CONFIG_SRCDIR([src/game.hh])
+AM_INIT_AUTOMAKE
+AC_CONFIG_HEADERS(config.h)
+
+AC_PROG_CC
+AC_C_CONST
+AC_C_INLINE
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_RANLIB
+if test -n "$GCC" ; then CC="$CC -Wall"; CXX="$CXX -Wall"; fi
+
+dnl
+dnl strerror()?
+dnl
+
+AC_REPLACE_FUNCS(strerror)
+
+
+dnl
+dnl integer types
+dnl
+
+AC_CHECK_HEADERS(inttypes.h, have_inttypes_h=yes, have_inttypes_h=no)
+AC_CHECK_HEADERS(sys/types.h, have_sys_types_h=yes, have_sys_types_h=no)
+
+if test $have_inttypes_h = no -a $have_sys_types_h = yes; then
+    AC_CACHE_CHECK([for uintXX_t typedefs], ac_cv_uint_t,
+    [AC_EGREP_HEADER(dnl
+changequote(<<,>>)<<(^|[^a-zA-Z_0-9])uint32_t[^a-zA-Z_0-9]>>changequote([,]),
+    sys/types.h, ac_cv_uint_t=yes, ac_cv_uint_t=no)])
+fi
+if test $have_inttypes_h = no -a $have_sys_types_h = yes -a "$ac_cv_uint_t" = no; then
+    AC_CACHE_CHECK([for u_intXX_t typedefs], ac_cv_u_int_t,
+    [AC_EGREP_HEADER(dnl
+changequote(<<,>>)<<(^|[^a-zA-Z_0-9])u_int32_t[^a-zA-Z_0-9]>>changequote([,]),
+    sys/types.h, ac_cv_u_int_t=yes, ac_cv_u_int_t=no)])
+fi
+if test $have_inttypes_h = yes -o "$ac_cv_uint_t" = yes; then
+    :
+elif test "$ac_cv_u_int_t" = yes; then
+    AC_DEFINE(HAVE_U_INT_TYPES, 1, [Define if you have u_intXX_t types but not uintXX_t types.])
+else
+    AC_MSG_WARN([
+=========================================
+
+Neither uint32_t nor u_int32_t defined by <inttypes.h> or <sys/types.h>!
+Assuming "short" has 16 bits and "int" has 32 bits.
+
+=========================================])
+    AC_DEFINE(HAVE_FAKE_INT_TYPES, 1, [Define if intXX_t types are not available.])
+fi
+
+AC_CHECK_TYPES(uintptr_t, [], [],
+[#if HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+])
+
+AC_CHECK_SIZEOF(void *)
+AC_CHECK_SIZEOF(unsigned long)
+AC_CHECK_SIZEOF(unsigned int)
+
+
+dnl
+dnl <new> and/or <new.h>
+dnl
+
+AC_LANG([C++])
+AC_CACHE_CHECK(whether <new> works, ac_cv_good_new_hdr,
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <new>]], [[
+  int a;
+  int *b = new(&a) int;
+  return 0;
+]])],[ac_cv_good_new_hdr=yes],[ac_cv_good_new_hdr=no]))
+if test "$ac_cv_good_new_hdr" = yes; then
+   AC_DEFINE(HAVE_NEW_HDR, 1, [Define if <new> exists and works.])
+fi
+AC_CHECK_HEADERS(new.h)
+
+
+dnl
+dnl Set PKGDATADIR -- must expand it to get rid of a possible `${prefix}'
+dnl
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+eval pkgdatadir=$datadir/$PACKAGE
+eval pkgdatadir=$pkgdatadir
+AC_DEFINE_UNQUOTED([PKGDATADIR], ["$pkgdatadir"], [Define to the pathname of the --pkgdatadir directory.])
+
+
+dnl
+dnl verbatim portions of the header
+dnl
+
+AH_TOP([#ifndef XMAHJONGG_CONFIG_H
+#define XMAHJONGG_CONFIG_H])
+
+AH_BOTTOM([#include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Use the clean-failing malloc library in fmalloc.c */
+#define xmalloc(s)		fail_die_malloc((s),__FILE__,__LINE__)
+#define xrealloc(p,s)		fail_die_realloc((p),(s),__FILE__,__LINE__)
+#define xfree			free
+void *fail_die_malloc(size_t, const char *, int);
+void *fail_die_realloc(void *, size_t, const char *, int);
+
+/* Prototype strerror() if we don't have it. */
+#if !HAVE_STRERROR
+char *strerror(int errno);
+#endif
+
+#ifdef __cplusplus
+}
+/* Get rid of a possible inline macro under C++. */
+# define inline inline
+#endif
+
+#endif /* XMAHJONGG_CONFIG_H */])
+
+
+dnl
+dnl Output
+dnl
+
+AC_CONFIG_FILES([Makefile src/Makefile liblcdf/Makefile])
+AC_OUTPUT
