@@ -75,7 +75,8 @@ SwWindow::clear_area(int x, int y, int width, int height)
 //
 
 SwClippedWindow::SwClippedWindow(Display *display, Window window, int depth)
-  : SwWindow(display, window, depth), _clipping(false)
+  : SwWindow(display, window, depth), _clipping(false),
+    _clip_left(0), _clip_top(0), _clip_right(0), _clip_bottom(0)
 {
 }
 
@@ -204,7 +205,7 @@ SwGifImage::create_pixmaps(SwDrawable *drawable)
   Pixmap mask = None;
   if (_gfi->transparent >= 0)
     mask = Gif_XMask(gifx, _gfs, _gfi);
-  set_image(gifx->display, source, mask, _gfi->width, _gfi->height);
+  set_image(gifx->display, (unsigned long)source, (unsigned long)mask, (int)_gfi->width, (int)_gfi->height);
   _made = true;
 }
 

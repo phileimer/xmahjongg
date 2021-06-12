@@ -33,6 +33,7 @@ Moment last_new_board;
 static Gif_XContext *gifx;
 static Gif_Stream *gifbuttons;
 static MatchCount *matches;
+Atom wm_protocols, wm_delete_window;
 extern Gif_Record buttons_gif;
 
 #define DISPLAY_OPT		300
@@ -715,6 +716,11 @@ particular purpose.\n");
     XSetWMProperties(display, window, &window_name_prop, &icon_name_prop,
 		     NULL, 0, size_hint, NULL, &class_hint);
     
+    /* to catch the close button event sent from window manager */
+    wm_protocols = XInternAtom(display, "WM_PROTOCOLS", False);
+    wm_delete_window = XInternAtom(display, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(display, window, &wm_delete_window, 1);
+
     XFree(window_name_prop.value);
     XFree(icon_name_prop.value);
 

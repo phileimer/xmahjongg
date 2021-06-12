@@ -16,6 +16,7 @@
 
 extern bool solvable_boards;
 extern Moment last_new_board;
+extern Atom wm_protocols, wm_delete_window;
 
 
 Panel::Panel(Display *d, Window w)
@@ -495,5 +496,10 @@ Panel::handle(Game *game, XEvent *e)
     _visible = false;
     break;
     
+   case ClientMessage:
+	if( e->xclient.message_type == wm_protocols && e->xclient.data.l[0] == wm_delete_window )
+	  exit(0);
+	break;
+
   }
 }
