@@ -587,6 +587,7 @@ main(int argc, char *argv[])
       printf("LCDF Xmahjongg %s\n", VERSION);
       printf("\
 Copyright (C) 1993-2005 Eddie Kohler and others\n\
+Copyright (C) 2017-2021 Jean Philippe Eimer\n\
 This is free software; see the source for copying conditions.\n\
 There is NO warranty, not even for merchantability or fitness for a\n\
 particular purpose.\n");

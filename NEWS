@@ -1,5 +1,10 @@
 Xmahjongg NEWS
 
+Version 3.7.2   12.Jun.2021	- J. Ph.
+* update and fix autoconf/automake
+* Fix window resize
+
+
 Version 3.7.1   28.Jan.2020	- J. Ph.
 * update and fix autoconf/automake
 * silent warnings
