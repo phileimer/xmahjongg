@@ -7,6 +7,7 @@ GenericName=
 Comment=A colorful solitaire Mah Jongg game
 Comment[bg_BG.UTF-8]=Премахване на купчина плочки чрез групирането им по двойки
 Comment[de]=ein farbenfrohes Mahjong-Spiel
+Comment[fr]=Un magnifique jeu Mah Jongg, solitaire
 Icon=xmahjongg
 Exec=xmahjongg
 Terminal=false
