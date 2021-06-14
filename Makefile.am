@@ -11,7 +11,7 @@ desktopdir = $(datadir)/applications
 desktop_DATA = xmahjongg.desktop
 
 icondir = $(datadir)/pixmaps
-icon_DATA = xmahjongg.png
+icon_DATA = images/xmahjongg.png
 
 #
 # Installation
