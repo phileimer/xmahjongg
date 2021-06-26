@@ -1,0 +1,13 @@
+# Create a double size GIF
+# J. Ph. EIMER - phil@jpmr.org
+
+# using gifsicle
+#	http://www.lcdf.org/gifsicle/
+#	https://github.com/kohler/gifsicle
+
+# To get tile size and border size from original file
+gifsicle --xinfo thick.gif
+
+# To change size
+gifsicle --resize-width 144 --app-extension xmahjongg border=16 thick.gif -o thick_double.gif
+
