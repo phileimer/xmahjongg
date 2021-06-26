@@ -1,5 +1,10 @@
 Xmahjongg NEWS
 
+Version 3.7.3   12.Jun.2021	- J. Ph.
+* set up title bar close button
+* add application and icon files for desktop
+
+
 Version 3.7.2   12.Jun.2021	- J. Ph.
 * update and fix autoconf/automake
 * Fix window resize
