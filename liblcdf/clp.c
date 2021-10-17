@@ -159,8 +159,15 @@ Clp_NewParser(int argc, const char * const *argv, int nopt, Clp_Option *opt)
     Clp_Parser *clp = (Clp_Parser *)malloc(sizeof(Clp_Parser));
     Clp_Internal *cli = (Clp_Internal *)malloc(sizeof(Clp_Internal));
     Clp_LongMinMatch *lmm = (Clp_LongMinMatch *)malloc(sizeof(Clp_LongMinMatch) * nopt);
+
+    if(cli)
+    {
+        cli->argtype = (Clp_ArgType *)malloc(sizeof(Clp_ArgType) * 5);
+        if (!cli->argtype)
+            goto failed;
+    }
     if (!clp || !cli || !lmm)
-	goto failed;
+        goto failed;
   
     clp->internal = cli;
     cli->long_min_match = lmm;
@@ -221,9 +228,6 @@ Clp_NewParser(int argc, const char * const *argv, int nopt, Clp_Option *opt)
     cli->opt = opt;
     cli->nopt = nopt;
   
-    cli->argtype = (Clp_ArgType *)malloc(sizeof(Clp_ArgType) * 5);
-    if (!cli->argtype)
-	goto failed;
     cli->nargtype = 5;
   
     for (i = 0; i < 256; i++)
