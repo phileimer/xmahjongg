@@ -2,12 +2,11 @@
 #define LCDF_VECTOR_HH
 #include <assert.h>
 #include <stdlib.h>
-#ifdef HAVE_NEW_HDR
+
+#ifdef __cplusplus
 # include <new>
-#elif defined(HAVE_NEW_H)
-# include <new.h>
 #else
-static inline void *operator new(size_t, void *v) { return v; }
+# include <new.h>
 #endif
 
 template <class T>
