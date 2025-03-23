@@ -1,5 +1,5 @@
-defines = ['-DVERSION="@0@"'.format(meson.project_version())]
-defines	+= ['-DPKGDATADIR="@0@"'.format(join_paths(get_option('prefix'), get_option('datadir')))]
+defines = ['-DVERSION="@0@"'.format( meson.project_version() )]
+defines	+= ['-DPKGDATADIR="@0@"'.format( join_paths( get_option('prefix'), get_option('datadir'), 'xmahjongg' ) )]
 
 dep = dependency('X11', required : true)
 
