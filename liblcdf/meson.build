@@ -6,7 +6,7 @@ liblcdf_static = static_library('lcdf',
 	include_directories: '../include',
 	install : false)
 
-executable('giftoc',
+giftoc_exec = executable('giftoc',
   'giftoc.c',
   include_directories: '../include',
   install: false)
