@@ -81,7 +81,7 @@ Vector<T>::erase(iterator a, iterator b)
 template <class T> bool
 Vector<T>::reserve(int want)
 {
-    if (want < 0)
+    if (want <= 0)
 	want = _capacity > 0 ? _capacity * 2 : 4;
     if (want <= _capacity)
 	return true;
