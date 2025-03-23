@@ -1,0 +1,26 @@
+# file used to cross compile with meson
+#  meson setup BUILD --cross-file cross_aarch64.txt
+
+[constants]
+toolpath = '/opt/opi_arm64'
+toolbinpath = toolpath / 'bin'
+arch = 'aarch64-none-linux-gnu-'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+
+[binaries]
+c = toolbinpath / arch + 'gcc'
+cpp = toolbinpath / arch + 'g++'
+ar = toolbinpath / arch + 'ar'
+ld = toolbinpath / arch + 'ld'
+objcopy = toolbinpath / arch + 'objcopy'
+strip = toolbinpath / arch + 'strip'
+pkg-config = toolbinpath / arch + 'pkg-config'
+windres = toolbinpath / arch + 'windres'
+
+wx-config = toolbinpath / 'wx-config'
+
